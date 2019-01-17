@@ -5,7 +5,9 @@
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/aravindnc/mongoose-aggregate-paginate-v2/issues)
 [![HitCount](http://hits.dwyl.io/aravindnc/mongoose-aggregate-paginate-v2.svg)](http://hits.dwyl.io/aravindnc/mongoose-aggregate-paginate-v2)
 
-> A cursor based custom pagination library for [Mongoose](http://mongoosejs.com) with customizable labels.
+> A cursor based custom aggregate pagination library for [Mongoose](http://mongoosejs.com) with customizable labels.
+
+If you are looking for basic query pagination library without aggregate, use this one [mongoose-paginate-v2](https://github.com/aravindnc/mongoose-paginate-v2)
 
 ## Installation
 
