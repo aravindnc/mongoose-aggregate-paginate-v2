@@ -31,7 +31,6 @@ mySchema.plugin(aggregatePaginate);
 
 var myModel = mongoose.model('SampleModel',  mySchema); 
 
-var myAggregate = myModel.aggregate();
 ```
 
 and then use model `aggregatePaginate` method,
@@ -45,6 +44,7 @@ const options = {
     limit: 10
 };
 
+var myAggregate = myModel.aggregate();
 myModel.aggregatePaginate(myAggregate, options).then(function(results){
 	console.log(results);
 }).catch(function(err){
@@ -61,6 +61,7 @@ const options = {
     limit: 10
 };
 
+var myAggregate = myModel.aggregate();
 myModel.aggregatePaginate(myAggregate, options, function(err, results) {
 	if(err) {
 		console.err(err);
