@@ -1,6 +1,6 @@
 {
 	"name": "mongoose-aggregate-paginate-v2",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"description": "A cursor based custom aggregate pagination library for Mongoose with customizable labels.",
 	"main": "index.js",
 	"scripts": {
