@@ -80,10 +80,11 @@ Returns promise
 * `[aggregate-query]` {Object} - Aggregate Query criteria. [Documentation](https://docs.mongodb.com/manual/aggregation/)
 * `[options]` {Object}
   - `[sort]` {Object | String} - Sort order. [Documentation](http://mongoosejs.com/docs/api.html#query_Query-sort)
-  - `[page=1]` {Number} - Current Page.
-  - `[limit=10]` {Number} - Docs. per page.
+  - `[page]` {Number} - Current Page (Defaut: 1)
+  - `[limit]` {Number} - Docs. per page (Default: 10).
   - `[customLabels]` {Object} - Developers can provide custom labels for manipulating the response data.
-  - `[allowDiskUse]` {Bool} - To enable diskUse for bigger queries. (default=false)
+  - `[pagination]` {Boolean} - If `pagination` is set to false, it will return all docs without adding limit condition. (Default: True)
+  - `[allowDiskUse]` {Bool} - To enable diskUse for bigger queries. (Default: False)
 * `[callback(err, result)]` - (Optional) If specified the callback is called once pagination results are retrieved or when an error has occurred.
 
 **Return value**
@@ -190,6 +191,33 @@ Model.aggregatePaginate(aggregate, options, function(err, result) {
 	} else {
 		console.log(err);
 	};
+```
+
+### Global Options
+If you want to set the pagination options globally across the model. Then you can do like below,
+
+```js
+
+let mongooseAggregatePaginate = require('mongoose-aggregate-paginate-v2');
+
+let BookSchema = new mongoose.Schema({
+  title: String,
+  date: Date,
+  author: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'Author'
+  }
+});
+
+BookSchema.plugin(mongooseAggregatePaginate);
+
+let Book = mongoose.model('Book', BookSchema);
+
+// Like this.
+Book.aggregatePaginate.options = {
+  limit: 20
+};
+
 ```
 
 ## License
