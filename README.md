@@ -101,7 +101,7 @@ Promise fulfilled with object having properties:
 * `nextPage` {Number} - Next page number if available or NULL
 * `pagingCounter` {Number} - The starting sl. number of first document.
 
-Please note that the above properties can be renamed by setting customLabel attribute.
+Please note that the above properties can be renamed by setting customLabels attribute.
 
 ### Sample Usage
 
