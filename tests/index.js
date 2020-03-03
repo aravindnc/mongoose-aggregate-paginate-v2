@@ -103,7 +103,7 @@ describe('mongoose-paginate', function () {
         }
       }])
       var options = {
-        // limit: 10,
+        limit: 10,
         page: 5,
         allowDiskUse: true
       };
@@ -160,17 +160,70 @@ describe('mongoose-paginate', function () {
       };
       return Book.aggregatePaginate(aggregate, options).then((result) => {
 
-        expect(result.itemsList).to.have.length(10);
-        expect(result.itemsList[0].title).to.equal('Book #41');
+        expect(result.itemsList).to.have.length(20);
+        expect(result.itemsList[0].title).to.equal('Book #81');
         expect(result.itemCount).to.equal(100);
-        expect(result.perPage).to.equal(10);
+        expect(result.perPage).to.equal(20);
         expect(result.currentPage).to.equal(5);
-        expect(result.pageCounter).to.equal(41);
+        expect(result.pageCounter).to.equal(81);
         expect(result.hasPrev).to.equal(true);
-        expect(result.hasNext).to.equal(true);
+        expect(result.hasNext).to.equal(false);
         expect(result.prev).to.equal(4);
-        expect(result.next).to.equal(6);
-        expect(result.pageCount).to.equal(10);
+        expect(result.next).to.equal(null);
+        expect(result.pageCount).to.equal(5);
+      });
+    });
+	
+	it('with offset', function () {
+
+      var aggregate = Book.aggregate([{
+        $match: {
+          title: {
+            $in: [/Book/i]
+          }
+        }
+      }, {
+        $sort: {
+          date: 1
+        }
+      }])
+	  
+	  const myCustomLabels = {
+        totalDocs: 'itemCount',
+        docs: 'itemsList',
+        limit: 'perPage',
+        page: 'currentPage',
+        hasNextPage: 'hasNext',
+        hasPrevPage: 'hasPrev',
+        nextPage: 'next',
+        prevPage: 'prev',
+        totalPages: 'pageCount',
+        hasPrevPage: 'hasPrev',
+        hasNextPage: 'hasNext',
+        pagingCounter: 'pageCounter'
+      };
+
+      var options = {
+        // limit: 10,
+        offset: 80,
+        customLabels: myCustomLabels
+
+      };
+
+
+      return Book.aggregatePaginate(aggregate, options).then((result) => {
+
+        expect(result.itemsList).to.have.length(20);
+        expect(result.itemsList[0].title).to.equal('Book #81');
+        expect(result.itemCount).to.equal(100);
+        expect(result.perPage).to.equal(20);
+        expect(result.currentPage).to.equal(5);
+        expect(result.pageCounter).to.equal(81);
+        expect(result.hasPrev).to.equal(true);
+        expect(result.hasNext).to.equal(false);
+        expect(result.prev).to.equal(4);
+        expect(result.next).to.equal(null);
+        expect(result.pageCount).to.equal(5);
       });
     });
 

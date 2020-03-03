@@ -80,6 +80,7 @@ Returns promise
 * `[aggregate-query]` {Object} - Aggregate Query criteria. [Documentation](https://docs.mongodb.com/manual/aggregation/)
 * `[options]` {Object}
   - `[sort]` {Object | String} - Sort order. [Documentation](http://mongoosejs.com/docs/api.html#query_Query-sort)
+  - `[offset=0]` {Number} - Use `offset` or `page` to set skip position
   - `[page]` {Number} - Current Page (Defaut: 1)
   - `[limit]` {Number} - Docs. per page (Default: 10).
   - `[customLabels]` {Object} - Developers can provide custom labels for manipulating the response data.
@@ -95,6 +96,7 @@ Promise fulfilled with object having properties:
 * `limit` {Number} - Limit that was used
 * `page` {Number} - Current page number 
 * `totalPages` {Number} - Total number of pages.
+* `offset` {Number} - Only if specified or default `page`/`offset` values were used
 * `hasPrevPage` {Bool} - Availability of prev page.
 * `hasNextPage` {Bool} - Availability of next page.
 * `prevPage` {Number} - Previous page number if available or NULL
@@ -191,6 +193,14 @@ Model.aggregatePaginate(aggregate, options, function(err, result) {
 	} else {
 		console.log(err);
 	};
+```
+
+### Using `offset` and `limit`
+
+```javascript
+Model.aggregatePaginate(aggregate, { offset: 30, limit: 10 }, function(err, result) {
+  // result
+});
 ```
 
 ### Global Options
