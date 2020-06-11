@@ -83,6 +83,43 @@ describe('mongoose-paginate', function () {
     });
   });
 
+  it('count query test', function () {
+    var query = {
+      title: {
+        $in: [/Book/i]
+      }
+    };
+    var aggregate = Book.aggregate([{
+      $match: query
+    }, {
+      $sort: {
+        date: 1
+      }
+    }]);
+    var options = {
+      limit: 10,
+      page: 5,
+      allowDiskUse: true,
+      countQuery: Book.aggregate([{
+        $match: query
+      }])
+    };
+    return Book.aggregatePaginate(aggregate, options).then((result) => {
+
+      expect(result.docs).to.have.length(10);
+      expect(result.docs[0].title).to.equal('Book #41');
+      expect(result.totalDocs).to.equal(100);
+      expect(result.limit).to.equal(10);
+      expect(result.page).to.equal(5);
+      expect(result.pagingCounter).to.equal(41);
+      expect(result.hasPrevPage).to.equal(true);
+      expect(result.hasNextPage).to.equal(true);
+      expect(result.prevPage).to.equal(4);
+      expect(result.nextPage).to.equal(6);
+      expect(result.totalPages).to.equal(10);
+    });
+  });
+
   describe('paginates', function () {
 
     it('with global limit and page', function () {
@@ -147,8 +184,6 @@ describe('mongoose-paginate', function () {
         nextPage: 'next',
         prevPage: 'prev',
         totalPages: 'pageCount',
-        hasPrevPage: 'hasPrev',
-        hasNextPage: 'hasNext',
         pagingCounter: 'pageCounter'
       };
 
@@ -173,7 +208,7 @@ describe('mongoose-paginate', function () {
         expect(result.pageCount).to.equal(5);
       });
     });
-	
+
 	it('with offset', function () {
 
       var aggregate = Book.aggregate([{
@@ -187,7 +222,7 @@ describe('mongoose-paginate', function () {
           date: 1
         }
       }])
-	  
+
 	  const myCustomLabels = {
         totalDocs: 'itemCount',
         docs: 'itemsList',
@@ -198,8 +233,6 @@ describe('mongoose-paginate', function () {
         nextPage: 'next',
         prevPage: 'prev',
         totalPages: 'pageCount',
-        hasPrevPage: 'hasPrev',
-        hasNextPage: 'hasNext',
         pagingCounter: 'pageCounter'
       };
 
