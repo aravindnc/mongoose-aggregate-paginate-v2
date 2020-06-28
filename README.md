@@ -257,6 +257,9 @@ Book.aggregatePaginate.options = {
 
 ```
 
+## Release Note
+v1.0.42 - Added optional `countQuery` parameter to specify separate count queries in case of bigger aggerate pipeline.
+
 
 ## License
 [MIT](LICENSE)
