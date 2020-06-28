@@ -88,7 +88,7 @@ Returns promise
   - `[customLabels]` {Object} - Developers can provide custom labels for manipulating the response data.
   - `[pagination]` {Boolean} - If `pagination` is set to false, it will return all docs without adding limit condition. (Default: True)
   - `[allowDiskUse]` {Bool} - To enable diskUse for bigger queries. (Default: False)
-  - `[counQuery]` {Object} - Aggregate Query used to count the resultant documents. Can be used for bigger queries. (Default: `aggregate-query`)
+  - `[countQuery]` {Object} - Aggregate Query used to count the resultant documents. Can be used for bigger queries. (Default: `aggregate-query`)
 * `[callback(err, result)]` - (Optional) If specified the callback is called once pagination results are retrieved or when an error has occurred.
 
 **Return value**
@@ -206,6 +206,30 @@ Model.aggregatePaginate(aggregate, { offset: 30, limit: 10 }, function(err, resu
 });
 ```
 
+
+### Using `countQuery`
+
+```javascript
+// Define your aggregate query.
+var aggregate = Model.aggregate();
+
+// Define the count aggregate query. Can be different from `aggregate`
+var countAggregate = Model.aggregate();
+
+// Set the count aggregate query
+const options = {
+    countQuery: countAggregate
+};
+
+Model.aggregatePaginate(aggregate, options)
+	.then(function(result) {
+		// result
+	})
+	.catch(function(err){
+		console.log(err);
+	});
+```
+
 ### Global Options
 If you want to set the pagination options globally across the model. Then you can do like below,
 
@@ -233,28 +257,6 @@ Book.aggregatePaginate.options = {
 
 ```
 
-### Using `countQuery`
-
-```javascript
-// Define your aggregate query.
-var aggregate = Model.aggregate();
-
-// Define the count aggregate query. Can be different from `aggregate`
-var countAggregate = Model.aggregate();
-
-// Set the count aggregate query
-const options = {
-    countQuery: countAggregate
-};
-
-Model.aggregatePaginate(aggregate, options)
-	.then(function(result) {
-		// result
-	})
-	.catch(function(err){
-		console.log(err);
-	});
-```
 
 ## License
 [MIT](LICENSE)
