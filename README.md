@@ -88,7 +88,7 @@ Returns promise
   - `[customLabels]` {Object} - Developers can provide custom labels for manipulating the response data.
   - `[pagination]` {Boolean} - If `pagination` is set to false, it will return all docs without adding limit condition. (Default: True)
   - `[allowDiskUse]` {Bool} - To enable diskUse for bigger queries. (Default: False)
-  - `[counQuery]` {Object} - Aggregate Query used to count the resultant documents. Can be used for bigger queries. (Default: `aggregare-query`)
+  - `[counQuery]` {Object} - Aggregate Query used to count the resultant documents. Can be used for bigger queries. (Default: `aggregate-query`)
 * `[callback(err, result)]` - (Optional) If specified the callback is called once pagination results are retrieved or when an error has occurred.
 
 **Return value**
