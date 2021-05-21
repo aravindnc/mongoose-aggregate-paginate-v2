@@ -65,7 +65,8 @@ describe("mongoose-paginate", function () {
       },
     ]);
 
-    let promise = Book.aggregatePaginate(aggregate, {});
+    let promise = aggregate.paginateExec({});
+    // let promise = Book.aggregatePaginate(aggregate, {});
     expect(promise.then).to.be.an.instanceof(Function);
   });
 
@@ -79,7 +80,8 @@ describe("mongoose-paginate", function () {
         },
       },
     ]);
-    Book.aggregatePaginate(aggregate, {}, function (err, result) {
+
+    aggregate.paginateExec({}, function (err, result) {
       expect(err).to.be.null;
       expect(result).to.be.an.instanceOf(Object);
       done();
