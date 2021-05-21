@@ -1,50 +1,50 @@
 {
-	"name": "mongoose-aggregate-paginate-v2",
-	"version": "1.0.42",
-	"description": "A cursor based custom aggregate pagination library for Mongoose with customizable labels.",
-	"main": "index.js",
-	"scripts": {
-		"test": "./node_modules/.bin/mocha tests/*.js -R spec --ui bdd --timeout 5000"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/aravindnc/mongoose-aggregate-paginate-v2.git"
-	},
-	"keywords": [
-		"aggregate",
-		"aggregate-paginate",
-		"aggregate-pagination",
-		"mongoose-aggregate",
-		"mongoose",
-		"pagination",
-		"plugin",
-		"mongodb",
-		"paginate",
-		"paging",
-		"next",
-		"prev",
-		"nextpage",
-		"prevpage",
-		"total",
-		"paginator",
-		"plugin"
-	],
-	"author": "Aravind NC <aravind_n_c@yahoo.co.in> (http://aravindnc.com)",
-	"license": "MIT",
-	"bugs": {
-		"url": "https://github.com/aravindnc/mongoose-aggregate-paginate-v2/issues"
-	},
-	"homepage": "https://github.com/aravindnc/mongoose-aggregate-paginate-v2#readme",
-	"dependencies": {},
-	"devDependencies": {
-		"babel-cli": "^6.26.0",
-		"babel-preset-es2015": "^6.24.1",
-		"babel-preset-stage-0": "^6.24.1",
-		"mocha": "^5.2.0",
-		"mongoose": "^5.2.4",
-		"chai": "^4.2.0"
-	},
-	"engines": {
-		"node": ">=4.0.0"
-	}
+  "name": "mongoose-aggregate-paginate-v2",
+  "version": "1.0.43",
+  "description": "A cursor based custom aggregate pagination library for Mongoose with customizable labels.",
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/.bin/mocha tests/*.js -R spec --ui bdd --timeout 5000"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aravindnc/mongoose-aggregate-paginate-v2.git"
+  },
+  "keywords": [
+    "aggregate",
+    "aggregate-paginate",
+    "aggregate-pagination",
+    "mongoose-aggregate",
+    "mongoose",
+    "pagination",
+    "plugin",
+    "mongodb",
+    "paginate",
+    "paging",
+    "next",
+    "prev",
+    "nextpage",
+    "prevpage",
+    "total",
+    "paginator",
+    "plugin"
+  ],
+  "author": "Aravind NC <aravind_n_c@yahoo.co.in> (http://aravindnc.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/aravindnc/mongoose-aggregate-paginate-v2/issues"
+  },
+  "homepage": "https://github.com/aravindnc/mongoose-aggregate-paginate-v2#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "chai": "^4.2.0",
+    "mocha": "^5.2.0",
+    "mongoose": "^5.12.10"
+  },
+  "engines": {
+    "node": ">=4.0.0"
+  }
 }

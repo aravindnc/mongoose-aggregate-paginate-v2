@@ -1,31 +1,30 @@
-'use strict';
+"use strict";
 
-let mongoose = require('mongoose');
-let expect = require('chai').expect;
-let mongooseAggregatePaginate = require('../index');
+let mongoose = require("mongoose");
+let expect = require("chai").expect;
+let mongooseAggregatePaginate = require("../index");
 
-let MONGO_URI = 'mongodb://127.0.0.1/mongoose_paginate_test';
+let MONGO_URI = "mongodb://127.0.0.1/mongoose_paginate_test";
 
 let AuthorSchema = new mongoose.Schema({
-  name: String
+  name: String,
 });
-let Author = mongoose.model('Author', AuthorSchema);
+let Author = mongoose.model("Author", AuthorSchema);
 
 let BookSchema = new mongoose.Schema({
   title: String,
   date: Date,
   author: {
     type: mongoose.Schema.ObjectId,
-    ref: 'Author'
-  }
+    ref: "Author",
+  },
 });
 
 BookSchema.plugin(mongooseAggregatePaginate);
 
-let Book = mongoose.model('Book', BookSchema);
+let Book = mongoose.model("Book", BookSchema);
 
-describe('mongoose-paginate', function () {
-
+describe("mongoose-paginate", function () {
   before(function (done) {
     mongoose.connect(MONGO_URI, done);
   });
@@ -35,16 +34,17 @@ describe('mongoose-paginate', function () {
   });
 
   before(function () {
-    let book, books = [];
+    let book,
+      books = [];
     let date = new Date();
     return Author.create({
-      name: 'Arthur Conan Doyle'
+      name: "Arthur Conan Doyle",
     }).then(function (author) {
       for (let i = 1; i <= 100; i++) {
         book = new Book({
-          title: 'Book #' + i,
+          title: "Book #" + i,
           date: new Date(date.getTime() + i),
-          author: author._id
+          author: author._id,
         });
         books.push(book);
       }
@@ -52,62 +52,71 @@ describe('mongoose-paginate', function () {
     });
   });
 
-  afterEach(function () {
+  afterEach(function () {});
 
-  });
+  it("promise return test", function () {
+    var aggregate = Book.aggregate([
+      {
+        $match: {
+          title: {
+            $in: [/Book/i],
+          },
+        },
+      },
+    ]);
 
-  it('promise return test', function () {
-    var aggregate = Book.aggregate([{
-      $match: {
-        title: {
-          $in: [/Book/i]
-        }
-      }
-    }])
-    let promise = Book.aggregatePaginate(aggregate, {});
+    let promise = aggregate.paginateExec({});
+    // let promise = Book.aggregatePaginate(aggregate, {});
     expect(promise.then).to.be.an.instanceof(Function);
   });
 
-  it('callback test', function (done) {
-    var aggregate = Book.aggregate([{
-      $match: {
-        title: {
-          $in: [/Book/i]
-        }
-      }
-    }])
-    Book.aggregatePaginate(aggregate, {}, function (err, result) {
+  it("callback test", function (done) {
+    var aggregate = Book.aggregate([
+      {
+        $match: {
+          title: {
+            $in: [/Book/i],
+          },
+        },
+      },
+    ]);
+
+    aggregate.paginateExec({}, function (err, result) {
       expect(err).to.be.null;
       expect(result).to.be.an.instanceOf(Object);
       done();
     });
   });
 
-  it('count query test', function () {
+  it("count query test", function () {
     var query = {
       title: {
-        $in: [/Book/i]
-      }
+        $in: [/Book/i],
+      },
     };
-    var aggregate = Book.aggregate([{
-      $match: query
-    }, {
-      $sort: {
-        date: 1
-      }
-    }]);
+    var aggregate = Book.aggregate([
+      {
+        $match: query,
+      },
+      {
+        $sort: {
+          date: 1,
+        },
+      },
+    ]);
     var options = {
       limit: 10,
       page: 5,
       allowDiskUse: true,
-      countQuery: Book.aggregate([{
-        $match: query
-      }])
+      countQuery: Book.aggregate([
+        {
+          $match: query,
+        },
+      ]),
     };
     return Book.aggregatePaginate(aggregate, options).then((result) => {
-
       expect(result.docs).to.have.length(10);
-      expect(result.docs[0].title).to.equal('Book #41');
+      expect(result.docs[0].title).to.equal("Book #41");
       expect(result.totalDocs).to.equal(100);
       expect(result.limit).to.equal(10);
       expect(result.page).to.equal(5);
@@ -120,34 +129,34 @@ describe('mongoose-paginate', function () {
     });
   });
 
-  describe('paginates', function () {
-
-    it('with global limit and page', function () {
-
+  describe("paginates", function () {
+    it("with global limit and page", function () {
       Book.aggregatePaginate.options = {
-        limit: 20
+        limit: 20,
       };
 
-      var aggregate = Book.aggregate([{
-        $match: {
-          title: {
-            $in: [/Book/i]
-          }
-        }
-      }, {
-        $sort: {
-          date: 1
-        }
-      }])
+      var aggregate = Book.aggregate([
+        {
+          $match: {
+            title: {
+              $in: [/Book/i],
+            },
+          },
+        },
+        {
+          $sort: {
+            date: 1,
+          },
+        },
+      ]);
       var options = {
         limit: 10,
         page: 5,
-        allowDiskUse: true
+        allowDiskUse: true,
       };
       return Book.aggregatePaginate(aggregate, options).then((result) => {
-
         expect(result.docs).to.have.length(10);
-        expect(result.docs[0].title).to.equal('Book #41');
+        expect(result.docs[0].title).to.equal("Book #41");
         expect(result.totalDocs).to.equal(100);
         expect(result.limit).to.equal(10);
         expect(result.page).to.equal(5);
@@ -160,43 +169,43 @@ describe('mongoose-paginate', function () {
       });
     });
 
-    it('with custom labels', function () {
-
-      var aggregate = Book.aggregate([{
-        $match: {
-          title: {
-            $in: [/Book/i]
-          }
-        }
-      }, {
-        $sort: {
-          date: 1
-        }
-      }])
+    it("with custom labels", function () {
+      var aggregate = Book.aggregate([
+        {
+          $match: {
+            title: {
+              $in: [/Book/i],
+            },
+          },
+        },
+        {
+          $sort: {
+            date: 1,
+          },
+        },
+      ]);
 
       const myCustomLabels = {
-        totalDocs: 'itemCount',
-        docs: 'itemsList',
-        limit: 'perPage',
-        page: 'currentPage',
-        hasNextPage: 'hasNext',
-        hasPrevPage: 'hasPrev',
-        nextPage: 'next',
-        prevPage: 'prev',
-        totalPages: 'pageCount',
-        pagingCounter: 'pageCounter'
+        totalDocs: "itemCount",
+        docs: "itemsList",
+        limit: "perPage",
+        page: "currentPage",
+        hasNextPage: "hasNext",
+        hasPrevPage: "hasPrev",
+        nextPage: "next",
+        prevPage: "prev",
+        totalPages: "pageCount",
+        pagingCounter: "pageCounter",
       };
 
       var options = {
         // limit: 10,
         page: 5,
-        customLabels: myCustomLabels
-
+        customLabels: myCustomLabels,
       };
       return Book.aggregatePaginate(aggregate, options).then((result) => {
-
         expect(result.itemsList).to.have.length(20);
-        expect(result.itemsList[0].title).to.equal('Book #81');
+        expect(result.itemsList[0].title).to.equal("Book #81");
         expect(result.itemCount).to.equal(100);
         expect(result.perPage).to.equal(20);
         expect(result.currentPage).to.equal(5);
@@ -209,45 +218,44 @@ describe('mongoose-paginate', function () {
       });
     });
 
-	it('with offset', function () {
+    it("with offset", function () {
+      var aggregate = Book.aggregate([
+        {
+          $match: {
+            title: {
+              $in: [/Book/i],
+            },
+          },
+        },
+        {
+          $sort: {
+            date: 1,
+          },
+        },
+      ]);
 
-      var aggregate = Book.aggregate([{
-        $match: {
-          title: {
-            $in: [/Book/i]
-          }
-        }
-      }, {
-        $sort: {
-          date: 1
-        }
-      }])
-
-	  const myCustomLabels = {
-        totalDocs: 'itemCount',
-        docs: 'itemsList',
-        limit: 'perPage',
-        page: 'currentPage',
-        hasNextPage: 'hasNext',
-        hasPrevPage: 'hasPrev',
-        nextPage: 'next',
-        prevPage: 'prev',
-        totalPages: 'pageCount',
-        pagingCounter: 'pageCounter'
+      const myCustomLabels = {
+        totalDocs: "itemCount",
+        docs: "itemsList",
+        limit: "perPage",
+        page: "currentPage",
+        hasNextPage: "hasNext",
+        hasPrevPage: "hasPrev",
+        nextPage: "next",
+        prevPage: "prev",
+        totalPages: "pageCount",
+        pagingCounter: "pageCounter",
       };
 
       var options = {
         // limit: 10,
         offset: 80,
-        customLabels: myCustomLabels
-
+        customLabels: myCustomLabels,
       };
 
-
       return Book.aggregatePaginate(aggregate, options).then((result) => {
-
         expect(result.itemsList).to.have.length(20);
-        expect(result.itemsList[0].title).to.equal('Book #81');
+        expect(result.itemsList[0].title).to.equal("Book #81");
         expect(result.itemCount).to.equal(100);
         expect(result.perPage).to.equal(20);
         expect(result.currentPage).to.equal(5);
@@ -259,7 +267,6 @@ describe('mongoose-paginate', function () {
         expect(result.pageCount).to.equal(5);
       });
     });
-
   });
 
   after(function (done) {
@@ -269,5 +276,4 @@ describe('mongoose-paginate', function () {
   after(function (done) {
     mongoose.disconnect(done);
   });
-
 });
