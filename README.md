@@ -131,6 +131,7 @@ Promise fulfilled with object having properties:
 - `prevPage` {Number} - Previous page number if available or NULL
 - `nextPage` {Number} - Next page number if available or NULL
 - `pagingCounter` {Number} - The starting sl. number of first document.
+- `meta` {Object} - Object of pagination meta data (Default false).
 
 Please note that the above properties can be renamed by setting customLabels attribute.
 
@@ -178,24 +179,28 @@ Now developers can specify the return field names if they want. Below are the li
 - hasNextPage
 - hasPrevPage
 - pagingCounter
+- meta
 
 You should pass the names of the properties you wish to changes using `customLabels` object in options. Labels are optional, you can pass the labels of what ever keys are you changing, others will use the default labels.
+
+If you want to return paginate properties as a separate object then define `customLabels.meta`.
 
 Same query with custom labels
 
 ```javascript
 
 const myCustomLabels = {
-    totalDocs: 'itemCount',
-    docs: 'itemsList',
-    limit: 'perPage',
-    page: 'currentPage',
-    nextPage: 'next',
-    prevPage: 'prev',
-    totalPages: 'pageCount',
-	hasPrevPage: 'hasPrev',
-	hasNextPage: 'hasNext',
-	pagingCounter: 'pageCounter'
+  totalDocs: 'itemCount',
+  docs: 'itemsList',
+  limit: 'perPage',
+  page: 'currentPage',
+  nextPage: 'next',
+  prevPage: 'prev',
+  totalPages: 'pageCount',
+  hasPrevPage: 'hasPrev',
+  hasNextPage: 'hasNext',
+  pagingCounter: 'pageCounter',
+  meta: 'paginator'
 };
 
 const options = {
@@ -208,20 +213,20 @@ const options = {
 var aggregate = Model.aggregate();
 
 Model.aggregatePaginate(aggregate, options, function(err, result) {
-	if(!err) {
-		// result.itemsList [here docs become itemsList]
-		// result.itemCount = 100 [here totalDocs becomes itemCount]
-		// result.perPage = 10 [here limit becomes perPage]
-		// result.currentPage = 1 [here page becomes currentPage]
-		// result.pageCount = 10 [here totalPages becomes pageCount]
-		// result.next = 2 [here nextPage becomes next]
-		// result.prev = null [here prevPage becomes prev]
+if(!err) {
+  // result.itemsList [here docs become itemsList]
+  // result.itemCount = 100 [here totalDocs becomes itemCount]
+  // result.perPage = 10 [here limit becomes perPage]
+  // result.currentPage = 1 [here page becomes currentPage]
+  // result.pageCount = 10 [here totalPages becomes pageCount]
+  // result.next = 2 [here nextPage becomes next]
+  // result.prev = null [here prevPage becomes prev]
 
-		// result.hasNextPage = true [not changeable]
-		// result.hasPrevPage = false [not changeable]
-	} else {
-		console.log(err);
-	};
+  // result.hasNextPage = true [not changeable]
+  // result.hasPrevPage = false [not changeable]
+} else {
+  console.log(err);
+};
 ```
 
 ### Using `offset` and `limit`
@@ -288,6 +293,8 @@ Book.aggregatePaginate.options = {
 ## Release Note
 
 v1.0.42 - Added optional `countQuery` parameter to specify separate count queries in case of bigger aggerate pipeline.
+
+v1.0.5 - Added `meta` attribute to return paginate meta data as a custom object.
 
 ## License
 
