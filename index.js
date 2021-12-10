@@ -11,3 +11,5 @@ module.exports = function (schema) {
     return this.model().aggregatePaginate(this, options, cb);
   };
 };
+
+module.exports.aggregatePaginate = aggregatePaginate
