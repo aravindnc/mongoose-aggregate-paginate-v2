@@ -12,4 +12,4 @@ module.exports = function (schema) {
   };
 };
 
-module.exports.paginate = aggregatePaginate
+module.exports.aggregatePaginate = aggregatePaginate;
