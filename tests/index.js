@@ -15,7 +15,7 @@ let BookSchema = new mongoose.Schema({
   title: String,
   date: Date,
   author: {
-    type: mongoose.Schema.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "Author",
   },
 });
@@ -25,12 +25,12 @@ BookSchema.plugin(mongooseAggregatePaginate);
 let Book = mongoose.model("Book", BookSchema);
 
 describe("mongoose-paginate", function () {
-  before(function (done) {
-    mongoose.connect(MONGO_URI, done);
+  before(async function () {
+    await mongoose.connect(MONGO_URI);
   });
 
-  before(function (done) {
-    mongoose.connection.db.dropDatabase(done);
+  before(async function () {
+    await mongoose.connection.db.dropDatabase();
   });
 
   before(function () {
@@ -269,11 +269,11 @@ describe("mongoose-paginate", function () {
     });
   });
 
-  after(function (done) {
-    mongoose.connection.db.dropDatabase(done);
+  after(async function () {
+    await mongoose.connection.db.dropDatabase();
   });
 
-  after(function (done) {
-    mongoose.disconnect(done);
+  after(async function () {
+    await mongoose.disconnect();
   });
 });
