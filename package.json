@@ -9,7 +9,7 @@
     "build": "babel lib -d dist",
     "lint": "./node_modules/.bin/eslint \"tests\" \"lib\" \".eslintrc.js\" --fix",
     "prettier": "./node_modules/.bin/prettier --write \"{lib,tests}/**/*.js\" \"*.md\"",
-    "prepublish": "npm run test"
+    "prepublishOnly": "npm run test"
   },
   "husky": {
     "hooks": {
