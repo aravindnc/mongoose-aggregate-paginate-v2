@@ -6,7 +6,7 @@
   "scripts": {
     "pretest": "npm run build",
     "test": "./node_modules/.bin/mocha tests/*.js -R spec --ui bdd --timeout 5000",
-    "build": "babel lib -d dist",
+    "prepare": "babel lib -d dist",
     "lint": "./node_modules/.bin/eslint \"tests\" \"lib\" \".eslintrc.js\" --fix",
     "prettier": "./node_modules/.bin/prettier --write \"{lib,tests}/**/*.js\" \"*.md\"",
     "prepublishOnly": "npm run test"
