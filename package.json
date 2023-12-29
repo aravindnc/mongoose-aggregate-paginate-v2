@@ -1,10 +1,10 @@
 {
   "name": "mongoose-aggregate-paginate-v2",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "A cursor based custom aggregate pagination library for Mongoose with customizable labels.",
   "main": "index.js",
   "scripts": {
-    "pretest": "npm run build",
+    "pretest": "npm run prepare",
     "test": "./node_modules/.bin/mocha tests/*.js -R spec --ui bdd --timeout 5000",
     "prepare": "babel lib -d dist",
     "lint": "./node_modules/.bin/eslint \"tests\" \"lib\" \".eslintrc.js\" --fix",
