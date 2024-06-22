@@ -260,6 +260,42 @@ Model.aggregatePaginate(aggregate, options)
   });
 ```
 
+### Using `prepagination`
+
+This allows you to paginate the result at a given placeholder stage in a pipeline rather than at the end which is the default behavior. This can be useful when you have a large dataset and you want to paginate before carrying out expensive operations such as `$lookup` or `$unwind`.
+
+```javascript
+// Define your pipeline
+const pipeline = [
+  {
+    $match: {
+      status: "active"
+    }
+  },
+  {
+    $sort: {
+      date: -1
+    }
+  },
+  "__PREPAGINATE__",
+  {
+    $lookup: {
+      from: "authors",
+      localField: "author",
+      foreignField: "_id",
+      as: "author"
+    }
+  }
+];
+Model.aggregatePaginate(pipeline, options)
+  .then(function (result) {
+    // result
+  })
+  .catch(function (err) {
+    console.log(err);
+  });
+```
+
 ### Global Options
 
 If you want to set the pagination options globally across the model. Then you can do like below,

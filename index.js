@@ -13,3 +13,5 @@ module.exports = function (schema) {
 };
 
 module.exports.aggregatePaginate = aggregatePaginate;
+
+module.exports.PREPAGINATION_PLACEHOLDER = aggregatePaginate.PREPAGINATION_PLACEHOLDER;
