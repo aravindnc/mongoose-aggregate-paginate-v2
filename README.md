@@ -1,3 +1,5 @@
+![Banner](static/banner.jpg)
+
 # mongoose-aggregate-paginate-v2
 
 [![npm version](https://img.shields.io/npm/v/mongoose-aggregate-paginate-v2.svg)](https://www.npmjs.com/package/mongoose-aggregate-paginate-v2)
@@ -269,13 +271,13 @@ This allows you to paginate the result at a given placeholder stage in a pipelin
 const pipeline = [
   {
     $match: {
-      status: "active"
-    }
+      status: "active",
+    },
   },
   {
     $sort: {
-      date: -1
-    }
+      date: -1,
+    },
   },
   "__PREPAGINATE__",
   {
@@ -283,9 +285,9 @@ const pipeline = [
       from: "authors",
       localField: "author",
       foreignField: "_id",
-      as: "author"
-    }
-  }
+      as: "author",
+    },
+  },
 ];
 Model.aggregatePaginate(pipeline, options)
   .then(function (result) {
