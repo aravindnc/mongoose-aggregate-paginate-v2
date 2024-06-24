@@ -1,8 +1,12 @@
 # mongoose-aggregate-paginate-v2
 
 [![npm version](https://img.shields.io/npm/v/mongoose-aggregate-paginate-v2.svg)](https://www.npmjs.com/package/mongoose-aggregate-paginate-v2)
+[![Build Status](https://github.com/aravindnc/mongoose-aggregate-paginate-v2/actions/workflows/build.yml/badge.svg)](#)
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/aravindnc/mongoose-aggregate-paginate-v2/issues)
 [![Downloads](https://img.shields.io/npm/dm/mongoose-aggregate-paginate-v2.svg)](https://img.shields.io/npm/dm/mongoose-aggregate-paginate-v2.svg)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/m/aravindnc/mongoose-aggregate-paginate-v2)
+![npms.io](https://img.shields.io/npms-io/maintenance-score/mongoose-aggregate-paginate-v2)
+![npms.io](https://img.shields.io/npms-io/quality-score/mongoose-aggregate-paginate-v2)
 
 > A cursor based custom aggregate pagination library for [Mongoose](http://mongoosejs.com) with customizable labels.
 
