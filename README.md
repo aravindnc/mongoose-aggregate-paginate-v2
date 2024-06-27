@@ -10,7 +10,7 @@
 ![npms.io](https://img.shields.io/npms-io/maintenance-score/mongoose-aggregate-paginate-v2)
 ![npms.io](https://img.shields.io/npms-io/quality-score/mongoose-aggregate-paginate-v2)
 
-> A cursor based custom aggregate pagination library for [Mongoose](http://mongoosejs.com) with customizable labels.
+> A page based custom aggregate pagination library for [Mongoose](http://mongoosejs.com) with customizable labels.
 
 If you are looking for basic query pagination library without aggregate, use this one [mongoose-paginate-v2](https://github.com/aravindnc/mongoose-paginate-v2)
 
