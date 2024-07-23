@@ -294,16 +294,88 @@ describe("mongoose-paginate", function () {
       };
       return Book.aggregatePaginate(aggregate, options).then((result) => {
         expect(result.docs).to.have.length(10);
-        expect(result.docs[0].title).to.equal("Book #41");
+        expect(result.docs[0].title).to.equal("Book #11");
         expect(result.totalDocs).to.equal(100);
         expect(result.limit).to.equal(10);
         expect(result.page).to.equal(2);
-        expect(result.pagingCounter).to.equal(41);
+        expect(result.pagingCounter).to.equal(11);
         expect(result.hasPrevPage).to.equal(true);
         expect(result.hasNextPage).to.equal(true);
         expect(result.prevPage).to.equal(1);
         expect(result.nextPage).to.equal(3);
         expect(result.totalPages).to.equal(10);
+      });
+    });
+  });
+
+  describe("sorting", function () {
+    var aggregate = Book.aggregate([
+      {
+        $match: {
+          title: {
+            $in: [/Book/i],
+          },
+        },
+      },
+    ]);
+    it("with object ascending", function () {
+      return Book.aggregatePaginate(aggregate, {
+        sort: { date: "asc" },
+        limit: 40,
+      }).then((result) => {
+        expect(result.docs).to.have.length(40);
+        expect(result.docs[0].title).to.equal("Book #1");
+        expect(result.docs[result.docs.length - 1].title).to.equal("Book #40");
+      });
+    });
+    it("with object descending", function () {
+      return Book.aggregatePaginate(aggregate, {
+        sort: { date: -1 },
+        limit: 50,
+      }).then((result) => {
+        expect(result.docs).to.have.length(50);
+        expect(result.docs[0].title).to.equal("Book #100");
+        expect(result.docs[result.docs.length - 1].title).to.equal("Book #51");
+      });
+    });
+    it("with string ascending", function () {
+      return Book.aggregatePaginate(aggregate, {
+        sort: "date",
+        limit: 10,
+      }).then((result) => {
+        expect(result.docs).to.have.length(10);
+        expect(result.docs[0].title).to.equal("Book #1");
+        expect(result.docs[result.docs.length - 1].title).to.equal("Book #10");
+      });
+    });
+    it("with string descending", function () {
+      return Book.aggregatePaginate(aggregate, {
+        sort: "-date",
+        limit: 10,
+      }).then((result) => {
+        expect(result.docs).to.have.length(10);
+        expect(result.docs[0].title).to.equal("Book #100");
+        expect(result.docs[result.docs.length - 1].title).to.equal("Book #91");
+      });
+    });
+    it("with array ascending", function () {
+      return Book.aggregatePaginate(aggregate, {
+        sort: [["date", "asc"]],
+        limit: 10,
+      }).then((result) => {
+        expect(result.docs).to.have.length(10);
+        expect(result.docs[0].title).to.equal("Book #1");
+        expect(result.docs[result.docs.length - 1].title).to.equal("Book #10");
+      });
+    });
+    it("with array descending", function () {
+      return Book.aggregatePaginate(aggregate, {
+        sort: [["date", "desc"]],
+        limit: 10,
+      }).then((result) => {
+        expect(result.docs).to.have.length(10);
+        expect(result.docs[0].title).to.equal("Book #100");
+        expect(result.docs[result.docs.length - 1].title).to.equal("Book #91");
       });
     });
   });
