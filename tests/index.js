@@ -267,6 +267,45 @@ describe("mongoose-paginate", function () {
         expect(result.pageCount).to.equal(5);
       });
     });
+
+    it("without facet", () => {
+      // part of the reason for this test is due to working the usage of $search in the aggregation pipeline which is
+      // not supported with facets. The building of a query without facets previously had a bug that meant the pagination
+      // details were based on a single page of results, rather than the full count of results from a pipeline. While
+      // this is a basic test it verifies the pagination still returns the correct result while not using facets.
+      var aggregate = Book.aggregate([
+        {
+          $match: {
+            title: {
+              $in: [/Book/i],
+            },
+          },
+        },
+        {
+          $sort: {
+            date: 1,
+          },
+        },
+      ]);
+      var options = {
+        limit: 10,
+        page: 2,
+        useFacet: false,
+      };
+      return Book.aggregatePaginate(aggregate, options).then((result) => {
+        expect(result.docs).to.have.length(10);
+        expect(result.docs[0].title).to.equal("Book #41");
+        expect(result.totalDocs).to.equal(100);
+        expect(result.limit).to.equal(10);
+        expect(result.page).to.equal(2);
+        expect(result.pagingCounter).to.equal(41);
+        expect(result.hasPrevPage).to.equal(true);
+        expect(result.hasNextPage).to.equal(true);
+        expect(result.prevPage).to.equal(1);
+        expect(result.nextPage).to.equal(3);
+        expect(result.totalPages).to.equal(10);
+      });
+    });
   });
 
   describe("sorting", function () {
