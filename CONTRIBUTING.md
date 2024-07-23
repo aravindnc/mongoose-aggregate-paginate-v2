@@ -81,6 +81,6 @@ This project adheres to a Code of Conduct. By participating, you are expected to
 
 Thank you for contributing!
 
-Aravind N C
+[@aravindnc](https://github.com/aravindnc)
 
 Feel free to adjust any sections to better fit your project's needs.
