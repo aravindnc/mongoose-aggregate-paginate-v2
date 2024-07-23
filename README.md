@@ -330,13 +330,7 @@ Book.aggregatePaginate.options = {
 
 ## Release Note
 
-v1.0.7 - Upgrade to mongoose v8
-
-v1.0.6 - Fixed exporting settings to global object.
-
-v1.0.5 - Added `meta` attribute to return paginate meta data as a custom object.
-
-v1.0.42 - Added optional `countQuery` parameter to specify separate count queries in case of bigger aggerate pipeline.
+Moved to CHANGELOG.md
 
 ## License
 
