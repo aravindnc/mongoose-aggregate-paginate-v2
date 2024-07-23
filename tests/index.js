@@ -294,11 +294,11 @@ describe("mongoose-paginate", function () {
       };
       return Book.aggregatePaginate(aggregate, options).then((result) => {
         expect(result.docs).to.have.length(10);
-        expect(result.docs[0].title).to.equal("Book #41");
+        expect(result.docs[0].title).to.equal("Book #11");
         expect(result.totalDocs).to.equal(100);
         expect(result.limit).to.equal(10);
         expect(result.page).to.equal(2);
-        expect(result.pagingCounter).to.equal(41);
+        expect(result.pagingCounter).to.equal(11);
         expect(result.hasPrevPage).to.equal(true);
         expect(result.hasNextPage).to.equal(true);
         expect(result.prevPage).to.equal(1);
