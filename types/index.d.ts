@@ -5,6 +5,8 @@
 // and LiRen Tu <https://github.com/tuliren> for their contribution
 
 declare module "mongoose" {
+    type PrePaginatePipelineStage = PipelineStage | '__PREPAGINATE__';
+    
     interface CustomLabels<T = string | undefined | boolean> {
         totalDocs?: T | undefined;
         docs?: T | undefined;
@@ -64,7 +66,7 @@ declare module "mongoose" {
 
     interface AggregatePaginateModel<D> extends Model<D> {
         aggregatePaginate<T>(
-            query?: Aggregate<T[]>,
+            query?: Aggregate<T[]> | PrePaginatePipelineStage[],
             options?: PaginateOptions,
             callback?: (err: any, result: AggregatePaginateResult<T>) => void,
         ): Promise<AggregatePaginateResult<T>>;
