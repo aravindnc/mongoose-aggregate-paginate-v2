@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.2.0
+
+[2025-02-17]
+
+- Optimizes the aggregation pipeline generated while using facet by moving the shared pipeline stages above the facet stage which were earlier duplicated
+
 ## v1.1.3
 
 [2025-01-23]
