@@ -380,6 +380,174 @@ describe("mongoose-paginate", function () {
     });
   });
 
+  describe("$lookup operator", function () {
+    // Create a Product schema and model for testing $lookup
+    before(async function () {
+      // Clear any existing Product model
+      if (mongoose.models.Product) {
+        delete mongoose.models.Product;
+      }
+
+      const ProductSchema = new mongoose.Schema({
+        name: String,
+        price: Number,
+        book: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Book",
+        },
+      });
+
+      const Product = mongoose.model("Product", ProductSchema);
+
+      // Create products linked to books
+      const books = await Book.find().limit(10);
+      const products = [];
+      for (let i = 0; i < books.length; i++) {
+        products.push({
+          name: `Product for ${books[i].title}`,
+          price: (i + 1) * 10,
+          book: books[i]._id,
+        });
+        // Add multiple products for some books
+        if (i < 3) {
+          products.push({
+            name: `Additional Product for ${books[i].title}`,
+            price: (i + 1) * 15,
+            book: books[i]._id,
+          });
+        }
+      }
+      await Product.create(products);
+    });
+
+    it("should work with $lookup using pipeline syntax", async function () {
+      const result = await Book.aggregatePaginate(
+        [
+          { $match: {} },
+          {
+            $lookup: {
+              from: "products",
+              let: { bookId: "$_id" },
+              as: "products",
+              pipeline: [
+                {
+                  $match: {
+                    $expr: {
+                      $eq: ["$book", "$$bookId"],
+                    },
+                  },
+                },
+                { $project: { name: 1, price: 1 } },
+                { $sort: { price: 1 } },
+              ],
+            },
+          },
+        ],
+        { page: 1, limit: 5 }
+      );
+
+      expect(result.docs).to.have.length(5);
+      expect(result.totalDocs).to.equal(100);
+      
+      // Verify that products field exists and is populated for books that have products
+      const firstBook = result.docs[0];
+      expect(firstBook).to.have.property("products");
+      expect(firstBook.products).to.be.an("array");
+    });
+
+    it("should work with $lookup using simple syntax", async function () {
+      const result = await Book.aggregatePaginate(
+        [
+          { $match: {} },
+          {
+            $lookup: {
+              from: "products",
+              localField: "_id",
+              foreignField: "book",
+              as: "relatedProducts",
+            },
+          },
+        ],
+        { page: 1, limit: 5 }
+      );
+
+      expect(result.docs).to.have.length(5);
+      expect(result.totalDocs).to.equal(100);
+      
+      // Verify that relatedProducts field exists
+      const firstBook = result.docs[0];
+      expect(firstBook).to.have.property("relatedProducts");
+      expect(firstBook.relatedProducts).to.be.an("array");
+    });
+
+    it("should work with $lookup and useFacet: false", async function () {
+      const result = await Book.aggregatePaginate(
+        [
+          { $match: {} },
+          {
+            $lookup: {
+              from: "products",
+              let: { bookId: "$_id" },
+              as: "products",
+              pipeline: [
+                {
+                  $match: {
+                    $expr: {
+                      $eq: ["$book", "$$bookId"],
+                    },
+                  },
+                },
+              ],
+            },
+          },
+        ],
+        { page: 1, limit: 5, useFacet: false }
+      );
+
+      expect(result.docs).to.have.length(5);
+      expect(result.totalDocs).to.equal(100);
+      
+      // Verify that products field exists
+      const firstBook = result.docs[0];
+      expect(firstBook).to.have.property("products");
+      expect(firstBook.products).to.be.an("array");
+    });
+
+    it("should work with $lookup using prepagination", async function () {
+      const result = await Book.aggregatePaginate(
+        [
+          { $match: {} },
+          "__PREPAGINATE__",
+          {
+            $lookup: {
+              from: "products",
+              let: { bookId: "$_id" },
+              as: "products",
+              pipeline: [
+                {
+                  $match: {
+                    $expr: {
+                      $eq: ["$book", "$$bookId"],
+                    },
+                  },
+                },
+              ],
+            },
+          },
+        ],
+        { page: 1, limit: 5 }
+      );
+
+      expect(result.docs).to.have.length(5);
+      expect(result.totalDocs).to.equal(100);
+      
+      // Verify that products field exists
+      const firstBook = result.docs[0];
+      expect(firstBook).to.have.property("products");
+      expect(firstBook.products).to.be.an("array");
+    });
+  });
+
   after(async function () {
     await mongoose.connection.db.dropDatabase();
   });
