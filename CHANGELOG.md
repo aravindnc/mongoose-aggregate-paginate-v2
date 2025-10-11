@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.1.5
+
+[Unreleased]
+
+- Fixed `$lookup` operator and other field-adding aggregation stages not working correctly when used without prepagination. The fix ensures that stages like `$lookup`, `$unwind`, `$group`, `$project`, and `$addFields` are executed within the facet docs branch, while filtering stages like `$match` are optimized by being moved before the facet for better performance.
+
 ## v1.1.4
 
 [2025-02-17]
