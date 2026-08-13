@@ -129,6 +129,21 @@ describe("mongoose-paginate", function () {
     });
   });
 
+  it("runs $addFields before a dependent $match with useFacet (default)", function () {
+    // Regression: a $match that references a field created by an earlier
+    // $addFields must not be hoisted above the $facet. titleLength >= 8 selects
+    // "Book #10".."Book #100" = 91 of the 100 seeded books.
+    var aggregate = Book.aggregate([
+      { $addFields: { titleLength: { $strLenCP: "$title" } } },
+      { $match: { titleLength: { $gte: 8 } } },
+    ]);
+    return Book.aggregatePaginate(aggregate, { limit: 10, page: 1 }).then((result) => {
+      expect(result.totalDocs).to.equal(91);
+      expect(result.docs).to.have.length(10);
+      result.docs.forEach((d) => expect(d.title.length).to.be.at.least(8));
+    });
+  });
+
   describe("paginates", function () {
     it("with global limit and page", function () {
       Book.aggregatePaginate.options = {
